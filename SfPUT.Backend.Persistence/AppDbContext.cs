@@ -12,6 +12,8 @@ namespace SfPUT.Backend.Persistence
         public DbSet<Rate> Rates { get; set; }
         public DbSet<Section> Sections { get; set; }
         public DbSet<Tag> Tags { get; set; }
+        public DbSet<Like> Likes { get; set; }
+        public DbSet<ProposedSection> ProposedSections { get; set; }
 
         public AppDbContext(DbContextOptions<AppDbContext> options) : base(options) { }
 
@@ -22,6 +24,7 @@ namespace SfPUT.Backend.Persistence
             modelBuilder.ApplyConfiguration(new RateConfiguration());
             modelBuilder.ApplyConfiguration(new TagConfiguration());
             modelBuilder.ApplyConfiguration(new CommentConfiguration());
+            modelBuilder.ApplyConfiguration(new LikeConfiguration());
             base.OnModelCreating(modelBuilder);
         }
     }

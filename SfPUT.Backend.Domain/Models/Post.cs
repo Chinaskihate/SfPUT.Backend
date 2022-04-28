@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SfPUT.Backend.Domain.Models
 {
     public class Post : DomainObject
     {
-        public Guid UserId { get; set; }
+        public User User { get; set; }
 
         public Section Section { get; set; }
 
