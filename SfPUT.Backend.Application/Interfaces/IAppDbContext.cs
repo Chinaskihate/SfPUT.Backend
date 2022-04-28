@@ -17,6 +17,10 @@ namespace SfPUT.Backend.Application.Interfaces
 
         DbSet<Tag> Tags { get; set; }
 
+        DbSet<Like> Likes { get; set; }
+
+        DbSet<ProposedSection> ProposedSections { get; set; }
+
         Task<int> SaveChangesAsync(CancellationToken cancellationToken);
     }
 }
