@@ -11,6 +11,6 @@ namespace SfPUT.Backend.Application.Interfaces.Likes
 
         Task<IEnumerable<Like>> GetPostLikes(Guid postId);
 
-        Task<IEnumerable<Like>> GetUserLikes(Guid postId);
+        Task<IEnumerable<Like>> GetUserLikes(Guid userId);
     }
 }

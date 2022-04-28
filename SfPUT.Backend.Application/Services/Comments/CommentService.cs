@@ -3,6 +3,7 @@ using SfPUT.Backend.Application.Interfaces.DataServices;
 using SfPUT.Backend.Application.Interfaces.Users;
 using SfPUT.Backend.Domain.Models;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace SfPUT.Backend.Application.Services.Comments
@@ -75,6 +76,11 @@ namespace SfPUT.Backend.Application.Services.Comments
 
             await _commentDataService.Update(comment.Id, comment);
             return true;
+        }
+
+        public async Task<IEnumerable<Comment>> GetUserComments(Guid userId)
+        {
+            return await _commentDataService.GetUserComments(userId);
         }
     }
 }

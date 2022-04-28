@@ -37,5 +37,15 @@ namespace SfPUT.Backend.Application.Services.Likes
                     return true;
             }
         }
+
+        public async Task<IEnumerable<Like>> GetPostLikes(Guid postId)
+        {
+            return await _likeDataService.GetPostLikes(postId);
+        }
+
+        public async Task<IEnumerable<Like>> GetUserLikes(Guid userId)
+        {
+            return await _likeDataService.GetUserLikes(userId);
+        }
     }
 }
