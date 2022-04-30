@@ -17,6 +17,7 @@ using SfPUT.Backend.Application.Services.Posts;
 using SfPUT.Backend.Application.Services.Rates;
 using SfPUT.Backend.Application.Services.Sections;
 using SfPUT.Backend.Application.Services.Tags;
+using SfPUT.Backend.Application.Services.Users;
 
 namespace SfPUT.Backend.Application
 {
@@ -30,7 +31,7 @@ namespace SfPUT.Backend.Application
             services.AddScoped<IRateService, RateService>();
             services.AddScoped<ISectionService, SectionService>();
             services.AddScoped<ITagService, TagService>();
-            services.AddScoped<IUserService, IUserService>();
+            services.AddScoped<IUserService, UserService>();
 
             return services;
         }

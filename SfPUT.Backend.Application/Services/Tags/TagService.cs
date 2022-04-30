@@ -57,6 +57,20 @@ namespace SfPUT.Backend.Application.Services.Tags
             return await _tagDataService.Delete(id);
         }
 
+        public async Task<IEnumerable<Tag>> GetTags(IEnumerable<Guid> tagsIds)
+        {
+            var set = new HashSet<Guid>(tagsIds);
+            var tags = (await _tagDataService.GetAll())
+                .AsEnumerable()
+                .Where(t => set.Contains(t.Id));
+            return tags;
+        }
+
+        public Task<bool> AddPostToTags(Post post, IEnumerable<Tag> tags)
+        {
+            throw new NotImplementedException();
+        }
+
         public async Task<IEnumerable<Tag>> ConvertTagVmsToTags(IEnumerable<TagVm> tagVms)
         {
             var tags = tagVms.Select(vm => _mapper.Map<Tag>(vm));

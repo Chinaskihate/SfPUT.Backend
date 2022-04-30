@@ -56,5 +56,15 @@ namespace SfPUT.Backend.Persistence.DataServices
         {
             return _dbContext.Likes.FirstOrDefaultAsync(l => l.PostId == postId && l.UserId == userId);
         }
+
+        public async Task<IQueryable<Like>> GetPostLikes(Guid postId)
+        {
+            return _dbContext.Likes.Where(l => l.PostId == postId);
+        }
+
+        public async Task<IQueryable<Like>> GetUserLikes(Guid userId)
+        {
+            return _dbContext.Likes.Where(l => l.UserId == userId);
+        }
     }
 }

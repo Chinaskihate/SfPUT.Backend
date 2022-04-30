@@ -19,7 +19,7 @@ namespace SfPUT.Backend.Application.Common.Comments
                 .ForMember(vm => vm.Id,
                     opt => opt.MapFrom(com => com.Id))
                 .ForMember(vm => vm.Content,
-                    opt => opt.MapFrom(com => com.Content))
+                    opt => opt.MapFrom(com => com.Info.Content))
                 .ForMember(vm => vm.Username,
                     opt => opt.MapFrom(com => com.User.Username));
         }

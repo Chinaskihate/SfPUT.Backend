@@ -75,7 +75,7 @@ namespace SfPUT.Backend.Application.Services.Posts
                 Tags = tags.ToList()
             };
             await _postDataService.Create(newPost);
-            _tagService.AddPostToTags(newPost, tags);
+            // _tagService.AddPostToTags(newPost, tags);
             return newPost.Id;
         }
 
@@ -109,8 +109,8 @@ namespace SfPUT.Backend.Application.Services.Posts
             post.Info.LastEditTime = DateTime.Now;
             post.Info.Description = description;
             post.Info.SellerLink = sellerLink;
-            post.Tags = tags.ToList();
-            _tagService.AddPostToTags(post, tags);
+            post.Tags = tags.ToList(); 
+            // _tagService.AddPostToTags(post, tags);
             await _postDataService.Update(post.Id, post);
             return true;
         }

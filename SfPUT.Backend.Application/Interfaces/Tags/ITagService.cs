@@ -18,6 +18,6 @@ namespace SfPUT.Backend.Application.Interfaces.Tags
 
         Task<IEnumerable<Tag>> GetTags(IEnumerable<Guid> tagsIds);
 
-        Task<bool> AddPostToTags(Post post, IEnumerable<Tag> tags);
+        // Task<bool> AddPostToTags(Post post, IEnumerable<Tag> tags);
     }
 }

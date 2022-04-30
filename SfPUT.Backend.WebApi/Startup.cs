@@ -48,9 +48,9 @@ namespace SfPUT.Backend.WebApi
                     policy.AllowAnyOrigin();
                 });
             });
-
+            services.AddControllers();
             //services.AddScoped<IPhotoService, PhotoService>();
-            //services.AddSwaggerGen();
+            services.AddSwaggerGen();
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -73,18 +73,18 @@ namespace SfPUT.Backend.WebApi
             {
                 endpoints.MapControllers();
             });
-            app.UseStaticFiles(new StaticFileOptions
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, "Photos")),
-                RequestPath = "/Photos"
-            });
-            app.UseDirectoryBrowser(new DirectoryBrowserOptions()
-            {
-                FileProvider = new PhysicalFileProvider(
-                    Path.Combine(env.ContentRootPath, "Photos")),
-                RequestPath = "/Photos"
-            });
+            // app.UseStaticFiles(new StaticFileOptions
+            // {
+            //     FileProvider = new PhysicalFileProvider(
+            //         Path.Combine(env.ContentRootPath, "Photos")),
+            //     RequestPath = "/Photos"
+            // });
+            // app.UseDirectoryBrowser(new DirectoryBrowserOptions()
+            // {
+            //     FileProvider = new PhysicalFileProvider(
+            //         Path.Combine(env.ContentRootPath, "Photos")),
+            //     RequestPath = "/Photos"
+            // });
         }
     }
 }

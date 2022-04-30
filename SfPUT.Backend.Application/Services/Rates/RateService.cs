@@ -1,7 +1,9 @@
 ﻿using SfPUT.Backend.Application.Interfaces.Rates;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.EntityFrameworkCore;
 using SfPUT.Backend.Application.Interfaces.DataServices;
 using SfPUT.Backend.Domain.Models;
 
@@ -52,6 +54,12 @@ namespace SfPUT.Backend.Application.Services.Rates
             prevRate.Value = rate;
             await _rateDataService.Update(prevRate.Id, prevRate);
             return true;
+        }
+
+        public async Task<IEnumerable<Rate>> GetUserRates(Guid userId)
+        {
+            var rates = await _rateDataService.GetByUserId(userId);
+            return await rates.ToListAsync();
         }
     }
 }

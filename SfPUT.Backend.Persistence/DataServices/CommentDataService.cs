@@ -57,5 +57,11 @@ namespace SfPUT.Backend.Persistence.DataServices
             var entity = await _dbContext.Comments.FirstOrDefaultAsync(c => c.Id == postId && c.User.Id == userId);
             return entity;
         }
+
+        public async Task<IQueryable<Comment>> GetUserComments(Guid userId)
+        {
+            var comments = _dbContext.Comments.Where(c => c.User.Id == userId);
+            return comments;
+        }
     }
 }
