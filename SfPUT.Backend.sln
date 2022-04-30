@@ -15,13 +15,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastru
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Presentation", "Presentation", "{DC4A5D2F-DA7B-4FF6-A4B8-D520E93276AF}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SfPUT.Backend.Domain", "SfPUT.Backend.Domain\SfPUT.Backend.Domain.csproj", "{63B6AEB9-7D17-434D-8883-970A03155C9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SfPUT.Backend.Domain", "SfPUT.Backend.Domain\SfPUT.Backend.Domain.csproj", "{63B6AEB9-7D17-434D-8883-970A03155C9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SfPUT.Backend.Application", "SfPUT.Backend.Application\SfPUT.Backend.Application.csproj", "{91148195-3C32-46A2-82D8-536EEEE60600}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SfPUT.Backend.Application", "SfPUT.Backend.Application\SfPUT.Backend.Application.csproj", "{91148195-3C32-46A2-82D8-536EEEE60600}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SfPUT.Backend.Persistence", "SfPUT.Backend.Persistence\SfPUT.Backend.Persistence.csproj", "{037A3BD2-C8BF-4AD5-8091-4A86FA90E405}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SfPUT.Backend.Persistence", "SfPUT.Backend.Persistence\SfPUT.Backend.Persistence.csproj", "{037A3BD2-C8BF-4AD5-8091-4A86FA90E405}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SfPUT.Backend.WebApi", "SfPUT.Backend.WebApi\SfPUT.Backend.WebApi.csproj", "{5BAE9286-CC43-49B9-96D6-64F03FE24C55}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "SfPUT.Backend.WebApi", "SfPUT.Backend.WebApi\SfPUT.Backend.WebApi.csproj", "{5BAE9286-CC43-49B9-96D6-64F03FE24C55}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
