@@ -10,7 +10,8 @@ namespace SfPUT.Backend.Persistence.EntityTypeConfigurations
         {
             builder.HasKey(rate => rate.Id);
             builder.HasIndex(rate => rate.Id).IsUnique();
-            builder.Property(rate => rate.Post).IsRequired();
+            // TODO: fix
+            // builder.Property(rate => rate.Post).IsRequired();
         }
     }
 }

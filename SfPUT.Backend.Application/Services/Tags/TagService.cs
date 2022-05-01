@@ -24,6 +24,7 @@ namespace SfPUT.Backend.Application.Services.Tags
         
         public async Task<Guid> CreateTag(string name)
         {
+            name = name.ToLower();
             var tags = await _tagDataService.GetByName(name);
             if (tags.Any())
             {
@@ -42,6 +43,9 @@ namespace SfPUT.Backend.Application.Services.Tags
 
         public async Task<IEnumerable<TagVm>> GetAllTags()
         {
+            // TODO: remove it;
+            var test = (await _tagDataService.GetAll()).ToList();
+
             return (await _tagDataService.GetAll())
                 .Select(t => _mapper.Map<TagVm>(t));
         }

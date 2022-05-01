@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -21,11 +23,25 @@ namespace SfPUT.Backend.WebApi.Controllers
         /// Get all existing tags.
         /// </summary>
         /// <returns></returns>
-        [HttpGet]
+        [HttpGet("GetAll")]
         public async Task<ActionResult<IEnumerable<TagVm>>> GetAll()
         {
             var tags = await _tagService.GetAllTags();
             return Ok(tags);
+        }
+
+        [HttpGet("GetByName")]
+        public async Task<ActionResult<IEnumerable<TagVm>>> GetByName(string name)
+        {
+            var tags = await _tagService.GetTagsByName(name);
+            return Ok(tags);
+        }
+
+        [HttpPost("CreateTag")]
+        public async Task<ActionResult<Guid>> CreateTag(string name)
+        {
+            var id = await _tagService.CreateTag(name);
+            return Ok(id);
         }
     }
 }
