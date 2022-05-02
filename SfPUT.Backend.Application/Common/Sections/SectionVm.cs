@@ -1,6 +1,7 @@
 ﻿using SfPUT.Backend.Application.Common.Mappings;
 using SfPUT.Backend.Domain.Models;
 using System;
+using AutoMapper;
 
 namespace SfPUT.Backend.Application.Common.Sections
 {
@@ -9,5 +10,9 @@ namespace SfPUT.Backend.Application.Common.Sections
         public Guid Id { get; set; }
 
         public string Name { get; set; }
+
+        public void Mapping(Profile profile)
+        {
+        }
     }
 }

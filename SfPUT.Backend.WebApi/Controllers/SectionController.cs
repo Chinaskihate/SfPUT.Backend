@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using System;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SfPUT.Backend.Application.Common.Sections;
 using SfPUT.Backend.Application.Interfaces.Sections;
@@ -27,14 +28,14 @@ namespace SfPUT.Backend.WebApi.Controllers
             var res = await _sectionService.GetAllSectionVms();
             return Ok(res);
         }
-        
+
         [HttpGet("GetByName")]
         public async Task<ActionResult<IEnumerable<SectionVm>>> GetSectionsByName(string name)
         {
             var res = await _sectionService.GetSectionVmsByName(name);
             return Ok(res);
         }
-        
+
         [HttpPost("CreateSection")]
         public async Task<ActionResult<bool>> CreateSection(string name)
         {
@@ -42,13 +43,20 @@ namespace SfPUT.Backend.WebApi.Controllers
             return Ok(res);
         }
 
+        [HttpDelete("DeleteSection")]
         // TODO: add roles to application.
-        // public async Task<ActionResult<bool>> DeleteSection(Guid id)
-        // {
-        //
-        // }
+        public async Task<ActionResult<bool>> DeleteSection(Guid id)
+        {
+            var res = await _sectionService.DeleteSection(id);
+            return Ok(res);
+        }
 
+        [HttpPost("ApplySection")]
         // TODO: add roles to application.
-        // Task<Guid> ApplySection(Guid adminId, Guid proposedSectionId);
+        public async Task<ActionResult<Guid>> ApplySection(Guid proposedSectionId)
+        {
+            var res = await _sectionService.ApplySection(UserId, proposedSectionId);
+            return Ok(res);
+        }
     }
 }

@@ -36,7 +36,7 @@ namespace SfPUT.Backend.WebApi
                             Url = new Uri("https://t.me/chinaskiHate")
                         }
                     });
-                options.AddSecurityDefinition($"Auth Token {apiVersion}",
+                options.AddSecurityDefinition("Bearer",
                     new OpenApiSecurityScheme()
                     {
                         In = ParameterLocation.Header,
@@ -54,7 +54,8 @@ namespace SfPUT.Backend.WebApi
                             Reference = new OpenApiReference()
                             {
                                 Type = ReferenceType.SecurityScheme,
-                                Id = $"AuthToken {apiVersion}"
+                                //Id = $"AuthToken {apiVersion}"
+                                Id = "Bearer"
                             }
                         },
                         new string[]{ }
