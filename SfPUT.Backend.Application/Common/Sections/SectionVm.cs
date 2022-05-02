@@ -13,6 +13,11 @@ namespace SfPUT.Backend.Application.Common.Sections
 
         public void Mapping(Profile profile)
         {
+            profile.CreateMap<Section, SectionVm>()
+                .ForMember(vm => vm.Id, opt =>
+                    opt.MapFrom(s => s.Id))
+                .ForMember(vm => vm.Name, opt =>
+                    opt.MapFrom(s => s.Name));
         }
     }
 }

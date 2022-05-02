@@ -24,6 +24,10 @@ namespace SfPUT.Backend.Application.Services.Tags
         
         public async Task<Guid> CreateTag(string name)
         {
+            if (name == null)
+            {
+                return Guid.Empty;
+            }
             name = name.ToLower();
             var tags = await _tagDataService.GetByName(name);
             if (tags.Any())
