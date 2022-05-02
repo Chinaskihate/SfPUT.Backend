@@ -49,14 +49,14 @@ namespace SfPUT.Backend.Application.Services.Posts
             _rateService = rateService;
         }
 
-        public async Task<Guid> CreatePost(Guid userId, Guid sectionId, string title, string sellerLink, string description, IEnumerable<Guid> tagsIds)
+        public async Task<Guid> CreatePost(CreatePostDto dto, Guid userId)
         {
             // TODO#8: move out all checks to some methods or to services.
             var user = await _userService.GetUserById(userId);
             // TODO#10: think about ALL await usings in solution.
-            await ThrowExceptionIfHavePostWithTitle(user.Id, title);
-            var section = await _sectionService.Get(sectionId);
-            var tags = await _tagService.GetTags(tagsIds);
+            await ThrowExceptionIfHavePostWithTitle(user.Id, dto.Title);
+            var section = await _sectionService.Get(dto.SectionId);
+            var tags = await _tagService.GetTags(dto.TagsIds);
             var newPost = new Post()
             {
                 Id = Guid.NewGuid(),
@@ -65,10 +65,10 @@ namespace SfPUT.Backend.Application.Services.Posts
                 Info = new PostInfo()
                 {
                     CreationTime = DateTime.Now,
-                    Description = description,
+                    Description = dto.Description,
                     LastEditTime = DateTime.Now,
-                    SellerLink = sellerLink,
-                    Title = title
+                    SellerLink = dto.SellerLink,
+                    Title = dto.Title
                 },
                 Rates = new List<Rate>(),
                 Section = section,
@@ -90,25 +90,23 @@ namespace SfPUT.Backend.Application.Services.Posts
             return await _postDataService.Delete(postId);
         }
 
-        public async Task<bool> UpdatePost(Guid postId, Guid userId, 
-            string sellerLink, string description,
-            IEnumerable<Guid> tagsIds)
+        public async Task<bool> UpdatePost(UpdatePostDto dto, Guid userId)
         {
-            var post = await _postDataService.Get(postId);
+            var post = await _postDataService.Get(dto.PostId);
             if (post.User.Id != userId)
             {
-                throw new EditingNotUserOwnPostException(userId: userId, postId: postId);
+                throw new EditingNotUserOwnPostException(userId: userId, postId: dto.PostId);
             }
 
-            var tags = await _tagService.GetTags(tagsIds);
+            var tags = await _tagService.GetTags(dto.TagsIds);
             if (DateTime.Now - post.Info.CreationTime > TimeSpan.FromDays(1))
             {
                 throw new PostEditTimeoutException(post.Id, post.Info.CreationTime, DateTime.Now);
             }
 
             post.Info.LastEditTime = DateTime.Now;
-            post.Info.Description = description;
-            post.Info.SellerLink = sellerLink;
+            post.Info.Description = dto.Description;
+            post.Info.SellerLink = dto.SellerLink;
             post.Tags = tags.ToList(); 
             // _tagService.AddPostToTags(post, tags);
             await _postDataService.Update(post.Id, post);

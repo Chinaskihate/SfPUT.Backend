@@ -5,6 +5,7 @@ using SfPUT.Backend.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using SfPUT.Backend.Application.Common.Comments;
 
 namespace SfPUT.Backend.Application.Services.Comments
 {
@@ -23,22 +24,22 @@ namespace SfPUT.Backend.Application.Services.Comments
             _userService = userService;
         }
         
-        public async Task<Guid> CreateComment(string content, Guid userId, Guid postId)
+        public async Task<Guid> CreateComment(CreateCommentDto dto, Guid userId)
         {
-            var comment = await _commentDataService.Get(userId: userId, postId: postId);
+            var comment = await _commentDataService.Get(userId: userId, postId: dto.PostId);
             if (comment != null)
             {
                 return Guid.Empty;
             }
 
             var user = await _userService.GetUserById(userId);
-            var post = await _postDataService.Get(postId);
+            var post = await _postDataService.Get(dto.PostId);
             var newComment = new Comment()
             {
                 Id = Guid.NewGuid(),
                 Info = new CommentInfo()
                 {
-                    Content = content,
+                    Content = dto.Content,
                     CreationDate = DateTime.Now,
                     LastEditTime = DateTime.Now
                 },
@@ -61,9 +62,9 @@ namespace SfPUT.Backend.Application.Services.Comments
             return await _commentDataService.Delete(commentId);
         }
 
-        public async Task<bool> UpdateComment(string content, Guid commentId, Guid userId)
+        public async Task<bool> UpdateComment(UpdateCommentDto dto, Guid userId)
         {
-            var comment = await _commentDataService.Get(commentId);
+            var comment = await _commentDataService.Get(dto.CommentId);
             if (comment == null || 
                 comment.User.Id != userId ||
                 (DateTime.Now - comment.Info.CreationDate).TotalDays >= 1)
@@ -71,7 +72,7 @@ namespace SfPUT.Backend.Application.Services.Comments
                 return false;
             }
 
-            comment.Info.Content = content;
+            comment.Info.Content = dto.Content;
             comment.Info.LastEditTime = DateTime.Now;
 
             await _commentDataService.Update(comment.Id, comment);

@@ -1,11 +1,10 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using SfPUT.Backend.Application.Common.Likes;
 using SfPUT.Backend.Application.Interfaces.DataServices;
 using SfPUT.Backend.Application.Interfaces.Likes;
 using SfPUT.Backend.Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SfPUT.Backend.Application.Services.Likes
 {
@@ -18,16 +17,16 @@ namespace SfPUT.Backend.Application.Services.Likes
             _likeDataService = likeDataService;
         }
 
-        public async Task<bool> LikePost(Guid postId, Guid userId, bool isLiked = true)
+        public async Task<bool> LikePost(LikePostDto dto, Guid userId)
         {
-            var like = await _likeDataService.GetLike(postId, userId);
-            switch (isLiked)
+            var like = await _likeDataService.GetLike(dto.PostId, userId);
+            switch (dto.IsLiked)
             {
                 case true when like == null:
                     await _likeDataService.Create(new Like()
                     {
                         Id = Guid.NewGuid(),
-                        PostId = postId,
+                        PostId = dto.PostId,
                         UserId = userId
                     });
                     return true;

@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
+using SfPUT.Backend.Application.Common.Rates;
 using SfPUT.Backend.Application.Interfaces.DataServices;
 using SfPUT.Backend.Domain.Models;
 
@@ -20,9 +21,9 @@ namespace SfPUT.Backend.Application.Services.Rates
             _postDataService = psoDataService;
         }
 
-        public async Task<bool> RatePost(Guid userId, Guid postId, int rate)
+        public async Task<bool> RatePost(RatePostDto dto, Guid userId)
         {
-            var post = await _postDataService.Get(postId);
+            var post = await _postDataService.Get(dto.PostId);
             if (post == null)
             {
                 return false;
@@ -31,7 +32,7 @@ namespace SfPUT.Backend.Application.Services.Rates
             {
                 return false;
             }
-            if (rate is < 0 or > 5)
+            if (dto.Rate is < 0 or > 5)
             {
                 return false;
             }
@@ -44,14 +45,14 @@ namespace SfPUT.Backend.Application.Services.Rates
                     Id = Guid.NewGuid(),
                     Post = post,
                     UserId = userId,
-                    Value = rate
+                    Value = dto.Rate
                 };
 
                 await _rateDataService.Create(rateModel);
                 return true;
             }
 
-            prevRate.Value = rate;
+            prevRate.Value = dto.Rate;
             await _rateDataService.Update(prevRate.Id, prevRate);
             return true;
         }

@@ -1,19 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
+﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SfPUT.Backend.Application.Common.Tags;
 using SfPUT.Backend.Application.Interfaces.Tags;
-using SfPUT.Backend.Domain.Models;
+using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace SfPUT.Backend.WebApi.Controllers
 {
+    [ApiVersionNeutral]
     [Produces("application/json")]
     [Route("api/[controller]")]
     [Authorize]
-    public class TagController : Controller
+    public class TagController : BaseController
     {
         private readonly ITagService _tagService;
 

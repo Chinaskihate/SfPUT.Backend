@@ -7,23 +7,12 @@ namespace SfPUT.Backend.Application.Interfaces.Posts
 {
     public interface IPostService
     {
-        Task<Guid> CreatePost(Guid userId,
-                            Guid sectionId,
-                            string title,
-                            string sellerLink,
-                            string description,
-                            IEnumerable<Guid> tagsIds);
+        Task<Guid> CreatePost(CreatePostDto dto, Guid userId);
 
         Task<bool> DeletePost(Guid postId, Guid userId);
 
-        // TODO#1: change many params to one class. 
-        Task<bool> UpdatePost(Guid postId,
-                            Guid userId,
-                            string sellerLink,
-                            string description,
-                            IEnumerable<Guid> tagsIds);
+        Task<bool> UpdatePost(UpdatePostDto dto, Guid userId);
 
-        // TODO#2: change many params to one class.
         Task<IEnumerable<PostVm>> GetPosts(string title,
                                         IEnumerable<Guid> tagsIds,
                                         double minRate,
