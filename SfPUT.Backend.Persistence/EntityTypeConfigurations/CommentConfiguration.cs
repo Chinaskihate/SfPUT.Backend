@@ -12,6 +12,7 @@ namespace SfPUT.Backend.Persistence.EntityTypeConfigurations
             builder.HasIndex(comment => comment.Id).IsUnique();
             // builder.Property(comment => comment.User).IsRequired();
             // builder.Property(comment => comment.Post).IsRequired();
+            builder.OwnsOne(comment => comment.User);
             builder.OwnsOne(comment => comment.Info);
         }
     }

@@ -28,12 +28,12 @@ namespace SfPUT.Backend.Persistence.DataServices
 
         public async Task<IQueryable<Comment>> GetAll()
         {
-            return _dbContext.Comments.AsQueryable();
+            return GetFullComments().AsQueryable();
         }
 
         public async Task<Comment> Get(Guid id)
         {
-            return await _dbContext.Comments.FirstOrDefaultAsync(c => c.Id == id);
+            return await GetFullComments().FirstOrDefaultAsync(c => c.Id == id);
         }
 
         public async Task<Comment> Update(Guid id, Comment entity)
@@ -54,14 +54,24 @@ namespace SfPUT.Backend.Persistence.DataServices
 
         public async Task<Comment> Get(Guid userId, Guid postId)
         {
-            var entity = await _dbContext.Comments.FirstOrDefaultAsync(c => c.Id == postId && c.User.Id == userId);
+            var entity = await GetFullComments().FirstOrDefaultAsync(c => c.Id == postId && c.User.Id == userId);
             return entity;
         }
 
         public async Task<IQueryable<Comment>> GetUserComments(Guid userId)
         {
-            var comments = _dbContext.Comments.Where(c => c.User.Id == userId);
+            var comments = GetFullComments().Where(c => c.User.Id == userId);
             return comments;
         }
+
+        private IQueryable<Comment> GetFullComments() => _dbContext.Comments
+            .Include(c => c.Post)
+                .ThenInclude(p => p.Comments)
+            .Include(c => c.Post)
+                .ThenInclude(p => p.Rates)
+            .Include(c => c.Post)
+                .ThenInclude(p => p.Section)
+            .Include(c => c.Post)
+                .ThenInclude(p => p.Tags);
     }
 }

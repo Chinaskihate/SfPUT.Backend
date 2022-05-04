@@ -28,7 +28,7 @@ namespace SfPUT.Backend.Application.Services.Rates
             {
                 return false;
             }
-            if (userId != post.User.Id)
+            if (userId == post.User.Id)
             {
                 return false;
             }

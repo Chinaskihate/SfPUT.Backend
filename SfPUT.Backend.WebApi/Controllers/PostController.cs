@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SfPUT.Backend.Application.Common.Posts;
 using SfPUT.Backend.Application.Common.Tags;
+using SfPUT.Backend.Application.Interfaces.Photos;
 using SfPUT.Backend.Application.Interfaces.Posts;
 
 namespace SfPUT.Backend.WebApi.Controllers
@@ -16,16 +17,18 @@ namespace SfPUT.Backend.WebApi.Controllers
     public class PostController : BaseController
     {
         private readonly IPostService _postService;
+        private readonly IPhotoService _photoService;
 
-        public PostController(IPostService postService)
+        public PostController(IPostService postService, IPhotoService photoService)
         {
             _postService = postService;
+            _photoService = photoService;
         }
 
         [HttpPut("CreatePost")]
         public async Task<ActionResult<Guid>> CreatePost(CreatePostDto dto)
         {
-            var res = await _postService.CreatePost(dto, UserId);
+            var res = await _postService.CreatePost(dto, UserId, Username);
             return Ok(res);
         }
 
@@ -69,6 +72,20 @@ namespace SfPUT.Backend.WebApi.Controllers
         {
             var res = await _postService.GetLikedPosts(UserId);
             return Ok(res);
+        }
+
+        [HttpPost("SavePhoto")]
+        public async Task<ActionResult<bool>> SavePhoto(Guid postId)
+        {
+            var result = await _photoService.SavePhoto(UserId, postId, Request.Form.Files[0]);
+            return Ok(result);
+        }
+
+        [HttpGet("DownloadPhoto")]
+        public async Task<ActionResult<bool>> DownloadPhoto(Guid postId)
+        {
+            var result = await _photoService.DownloadPhoto(postId);
+            return result == null ? NotFound(postId) : File(result, "image/png");
         }
     }
 }

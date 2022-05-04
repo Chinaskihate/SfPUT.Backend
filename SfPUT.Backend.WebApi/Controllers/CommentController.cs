@@ -25,7 +25,7 @@ namespace SfPUT.Backend.WebApi.Controllers
         [HttpPost("CreateComment")]
         public async Task<ActionResult<Guid>> CreateComment([FromBody] CreateCommentDto dto)
         {
-            var res = await _commentService.CreateComment(dto, UserId);
+            var res = await _commentService.CreateComment(dto, UserId, Username);
             return Ok(res);
         }
 

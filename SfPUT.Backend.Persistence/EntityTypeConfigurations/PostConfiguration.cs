@@ -11,6 +11,7 @@ namespace SfPUT.Backend.Persistence.EntityTypeConfigurations
             builder.HasKey(post => post.Id);
             builder.HasIndex(post => post.Id).IsUnique();
             builder.OwnsOne(post => post.Info);
+            builder.OwnsOne(post => post.User);
             // TODO: fix
             // builder.Property(post => post.Info.Title).HasMaxLength(100);
             // builder.Property(post => post.Section).IsRequired();

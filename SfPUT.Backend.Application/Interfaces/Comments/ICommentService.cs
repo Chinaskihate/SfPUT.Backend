@@ -8,7 +8,7 @@ namespace SfPUT.Backend.Application.Interfaces.Comments
 {
     public interface ICommentService
     {
-        Task<Guid> CreateComment(CreateCommentDto dto, Guid userId);
+        Task<Guid> CreateComment(CreateCommentDto dto, Guid userId, string username);
 
         Task<bool> DeleteComment(Guid commentId, Guid userId);
 

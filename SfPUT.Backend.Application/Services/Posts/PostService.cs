@@ -21,7 +21,6 @@ namespace SfPUT.Backend.Application.Services.Posts
     public class PostService : IPostService
     {
         private readonly IPostDataService _postDataService;
-        private readonly IUserService _userService;
         private readonly ITagService _tagService;
         private readonly IMapper _mapper;
         private readonly ISectionService _sectionService;
@@ -31,7 +30,6 @@ namespace SfPUT.Backend.Application.Services.Posts
 
         // TODO#5: change number of dependencies.
         public PostService(IPostDataService postDataService,
-            IUserService userService,
             ITagService tagService,
             IMapper mapper,
             ISectionService sectionService,
@@ -40,7 +38,6 @@ namespace SfPUT.Backend.Application.Services.Posts
             IRateService rateService)
         {
             _postDataService = postDataService;
-            _userService = userService;
             _tagService = tagService;
             _mapper = mapper;
             _sectionService = sectionService;
@@ -49,14 +46,17 @@ namespace SfPUT.Backend.Application.Services.Posts
             _rateService = rateService;
         }
 
-        public async Task<Guid> CreatePost(CreatePostDto dto, Guid userId)
+        public async Task<Guid> CreatePost(CreatePostDto dto, Guid userId, string username)
         {
-            // TODO#8: move out all checks to some methods or to services.
-            var user = await _userService.GetUserById(userId);
             // TODO#10: think about ALL await usings in solution.
-            await ThrowExceptionIfHavePostWithTitle(user.Id, dto.Title);
+            await ThrowExceptionIfHavePostWithTitle(userId, dto.Title);
             var section = await _sectionService.Get(dto.SectionId);
             var tags = await _tagService.GetTags(dto.TagsIds);
+            var user = new User()
+            {
+                Id = userId,
+                Username = username
+            };
             var newPost = new Post()
             {
                 Id = Guid.NewGuid(),
@@ -136,6 +136,7 @@ namespace SfPUT.Backend.Application.Services.Posts
 
         public async Task<IEnumerable<PostVm>> GetRatedPosts(Guid userId)
         {
+            var rates = (await _rateService.GetUserRates(userId)).ToList();
             return (await _rateService.GetUserRates(userId))
                 .Select(r => _mapper.Map<PostVm>(r.Post));
         }
@@ -150,6 +151,9 @@ namespace SfPUT.Backend.Application.Services.Posts
         {
             var likes = await _likeService.GetUserLikes(userId);
             var postsId = new HashSet<Guid>(likes.Select(l => l.PostId));
+            var test = (await _postDataService.GetAll())
+                .Where(p => postsId.Contains(p.Id))
+                .ToList();
             return (await _postDataService.GetAll())
                 .Where(p => postsId.Contains(p.Id))
                 .Select(p => _mapper.Map<PostVm>(p));

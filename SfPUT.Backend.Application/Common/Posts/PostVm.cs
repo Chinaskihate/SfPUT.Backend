@@ -33,7 +33,7 @@ namespace SfPUT.Backend.Application.Common.Posts
                         : post.Rates.Average(r => r.Value)))
                 .AfterMap((post, postVm, context) =>
                 {
-                    postVm.Section = context.Mapper.Map<SectionVm>(Section);
+                    postVm.Section = context.Mapper.Map<SectionVm>(post.Section);
                     postVm.Comments = post.Comments.Select(c => context.Mapper.Map<CommentVm>(c));
                     postVm.Tags = post.Tags.Select(t => context.Mapper.Map<TagVm>(t));
                 });

@@ -28,12 +28,12 @@ namespace SfPUT.Backend.Persistence.DataServices
 
         public async Task<IQueryable<Rate>> GetAll()
         {
-            return _dbContext.Rates.AsQueryable();
+            return GetFullRates().AsQueryable();
         }
 
         public async Task<Rate> Get(Guid id)
         {
-            return await _dbContext.Rates.FirstOrDefaultAsync(r => r.Id == id);
+            return await GetFullRates().FirstOrDefaultAsync(r => r.Id == id);
         }
 
         public async Task<Rate> Update(Guid id, Rate entity)
@@ -54,7 +54,21 @@ namespace SfPUT.Backend.Persistence.DataServices
 
         public async Task<IQueryable<Rate>> GetByUserId(Guid userId)
         {
-            return _dbContext.Rates.Where(r => r.UserId == userId);
+            return GetFullRates().Where(r => r.UserId == userId);
         }
+
+        private IQueryable<Rate> GetFullRates() =>_dbContext.Rates
+            .Include(r =>
+                r.Post)
+                .ThenInclude(p => p.Comments)
+            .Include(r =>
+                r.Post)
+                .ThenInclude(p => p.Rates)
+            .Include(r =>
+                r.Post)
+                .ThenInclude(p => p.Section)
+            .Include(r =>
+                r.Post)
+                .ThenInclude(p => p.Tags);
     }
 }

@@ -7,7 +7,7 @@ namespace SfPUT.Backend.Application.Interfaces.Posts
 {
     public interface IPostService
     {
-        Task<Guid> CreatePost(CreatePostDto dto, Guid userId);
+        Task<Guid> CreatePost(CreatePostDto dto, Guid userId, string username);
 
         Task<bool> DeletePost(Guid postId, Guid userId);
 

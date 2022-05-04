@@ -1,11 +1,10 @@
-﻿using SfPUT.Backend.Application.Interfaces.Comments;
+﻿using SfPUT.Backend.Application.Common.Comments;
+using SfPUT.Backend.Application.Interfaces.Comments;
 using SfPUT.Backend.Application.Interfaces.DataServices;
-using SfPUT.Backend.Application.Interfaces.Users;
 using SfPUT.Backend.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using SfPUT.Backend.Application.Common.Comments;
 
 namespace SfPUT.Backend.Application.Services.Comments
 {
@@ -13,18 +12,15 @@ namespace SfPUT.Backend.Application.Services.Comments
     {
         private readonly ICommentDataService _commentDataService;
         private readonly IPostDataService _postDataService;
-        private readonly IUserService _userService;
 
         public CommentService(ICommentDataService commentDataService, 
-            IPostDataService postDataService,
-            IUserService userService)
+            IPostDataService postDataService)
         {
             _commentDataService = commentDataService;
             _postDataService = postDataService;
-            _userService = userService;
         }
         
-        public async Task<Guid> CreateComment(CreateCommentDto dto, Guid userId)
+        public async Task<Guid> CreateComment(CreateCommentDto dto, Guid userId, string username)
         {
             var comment = await _commentDataService.Get(userId: userId, postId: dto.PostId);
             if (comment != null)
@@ -32,7 +28,11 @@ namespace SfPUT.Backend.Application.Services.Comments
                 return Guid.Empty;
             }
 
-            var user = await _userService.GetUserById(userId);
+            var user = new User()
+            {
+                Id = userId,
+                Username = username
+            };
             var post = await _postDataService.Get(dto.PostId);
             var newComment = new Comment()
             {

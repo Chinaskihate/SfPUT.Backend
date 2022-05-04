@@ -17,7 +17,9 @@ using Microsoft.Extensions.Options;
 using SfPUT.Backend.Application;
 using SfPUT.Backend.Application.Common.Mappings;
 using SfPUT.Backend.Application.Interfaces;
+using SfPUT.Backend.Application.Interfaces.Photos;
 using SfPUT.Backend.Persistence;
+using SfPUT.Backend.WebApi.Services.Photos;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
 namespace SfPUT.Backend.WebApi
@@ -74,6 +76,7 @@ namespace SfPUT.Backend.WebApi
             //services.AddScoped<IPhotoService, PhotoService>();
             services.AddSwaggerGen();
             services.AddApiVersioning();
+            services.AddScoped<IPhotoService, PhotoService>();
         }
         
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env,
@@ -106,18 +109,19 @@ namespace SfPUT.Backend.WebApi
             {
                 endpoints.MapControllers();
             });
-            // app.UseStaticFiles(new StaticFileOptions
-            // {
-            //     FileProvider = new PhysicalFileProvider(
-            //         Path.Combine(env.ContentRootPath, "Photos")),
-            //     RequestPath = "/Photos"
-            // });
-            // app.UseDirectoryBrowser(new DirectoryBrowserOptions()
-            // {
-            //     FileProvider = new PhysicalFileProvider(
-            //         Path.Combine(env.ContentRootPath, "Photos")),
-            //     RequestPath = "/Photos"
-            // });
+
+            app.UseStaticFiles(new StaticFileOptions
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.ContentRootPath, "Photos")),
+                RequestPath = "/Photos"
+            });
+            app.UseDirectoryBrowser(new DirectoryBrowserOptions()
+            {
+                FileProvider = new PhysicalFileProvider(
+                    Path.Combine(env.ContentRootPath, "Photos")),
+                RequestPath = "/Photos"
+            });
         }
     }
 }
