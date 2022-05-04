@@ -13,11 +13,7 @@ namespace SfPUT.Backend.Application.Interfaces.Posts
 
         Task<bool> UpdatePost(UpdatePostDto dto, Guid userId);
 
-        Task<IEnumerable<PostVm>> GetPosts(string title,
-                                        IEnumerable<Guid> tagsIds,
-                                        double minRate,
-                                        Guid sectionId,
-                                        DateTime creationTime);
+        Task<IEnumerable<PostVm>> GetPosts(GetPostDto dto);
 
         Task<IEnumerable<PostVm>> GetCommentedPosts(Guid userId);
 

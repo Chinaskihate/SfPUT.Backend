@@ -46,6 +46,13 @@ namespace SfPUT.Backend.WebApi.Controllers
             return Ok(res);
         }
 
+        [HttpPost("GetPosts")]
+        public async Task<ActionResult<IEnumerable<PostVm>>> GetPosts(GetPostDto dto)
+        {
+            var res = await _postService.GetPosts(dto);
+            return Ok(res);
+        }
+
         [HttpGet("GetCommentedPosts")]
         public async Task<ActionResult<IEnumerable<TagVm>>> GetCommentedPosts()
         {

@@ -28,12 +28,12 @@ namespace SfPUT.Backend.Persistence.DataServices
 
         public async Task<IQueryable<Section>> GetAll()
         {
-            return _dbContext.Sections.AsQueryable();
+            return GetFullSections().AsQueryable();
         }
 
         public async Task<Section> Get(Guid id)
         {
-            return await _dbContext.Sections.FirstOrDefaultAsync(s => s.Id == id);
+            return await GetFullSections().FirstOrDefaultAsync(s => s.Id == id);
         }
 
         public async Task<Section> Update(Guid id, Section entity)
@@ -54,7 +54,17 @@ namespace SfPUT.Backend.Persistence.DataServices
 
         public async Task<IQueryable<Section>> GetByName(string name)
         {
-            return _dbContext.Sections.Where(s => s.Name.Contains(name));
+            return GetFullSections().Where(s => s.Name.Contains(name));
         }
+
+        private IQueryable<Section> GetFullSections() => _dbContext.Sections
+            .Include(s => s.Posts)
+                .ThenInclude(p => p.Comments)
+            .Include(s => s.Posts)
+                .ThenInclude(p => p.Rates)
+            .Include(s => s.Posts)
+                .ThenInclude(p => p.Section)
+            .Include(s => s.Posts)
+                .ThenInclude(p => p.Tags);
     }
 }

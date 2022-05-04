@@ -113,17 +113,26 @@ namespace SfPUT.Backend.Application.Services.Posts
             return true;
         }
 
-        public async Task<IEnumerable<PostVm>> GetPosts(string title, IEnumerable<Guid> tagsIds, double minRate, Guid sectionId, DateTime creationTime)
+        public async Task<IEnumerable<PostVm>> GetPosts(GetPostDto dto)
         {
-            var tagsId = new HashSet<Guid>((await _tagService.GetTags(tagsIds))
+            var tagsIds = new HashSet<Guid>((await _tagService.GetTags(dto.TagsIds))
                 .Select(t => t.Id));
-            var section = await _sectionService.Get(sectionId);
-            var posts = section.Posts
-                .Where(p => p.Info.Title.Contains(title) &&
-                            p.Info.CreationTime > creationTime &&
-                            tagsIds.Intersect(p.Tags.Select(t => t.Id)).Any());
-            var postsVms = posts.Select(p => _mapper.Map<PostVm>(p))
-                .Where(vm => vm.Rate >= minRate);
+            var section = await _sectionService.Get(dto.SectionId);
+            var filteredPosts = section.Posts
+                .Where(p => p.Info.Title.Contains(dto.Title) &&
+                            p.Info.CreationTime > dto.CreationTime);
+            if (dto.TagsIds.Any())
+            {
+                filteredPosts = filteredPosts
+                    .Where(p => tagsIds
+                        .Intersect(p.Tags.Select(t => t.Id)).Any());
+            }
+            // var posts = section.Posts
+            //     .Where(p => p.Info.Title.Contains(dto.Title) &&
+            //                 p.Info.CreationTime > dto.CreationTime &&
+            //                 dto.TagsIds.Intersect(p.Tags.Select(t => t.Id)).Any()).ToList();
+            var postsVms = filteredPosts.Select(p => _mapper.Map<PostVm>(p))
+                .Where(vm => vm.Rate >= dto.MinRate);
             return postsVms;
         }
         
