@@ -54,28 +54,28 @@ namespace SfPUT.Backend.WebApi.Controllers
         }
 
         [HttpGet("GetCommentedPosts")]
-        public async Task<ActionResult<IEnumerable<TagVm>>> GetCommentedPosts()
+        public async Task<ActionResult<IEnumerable<PostVm>>> GetCommentedPosts()
         {
             var res = await _postService.GetCommentedPosts(UserId);
             return Ok(res);
         }
 
         [HttpGet("GetRatedPosts")]
-        public async Task<ActionResult<IEnumerable<TagVm>>> GetRatedPosts()
+        public async Task<ActionResult<IEnumerable<PostVm>>> GetRatedPosts()
         {
             var res = await _postService.GetRatedPosts(UserId);
             return Ok(res);
         }
 
         [HttpGet("GetUserPosts")]
-        public async Task<ActionResult<IEnumerable<TagVm>>> GetUserPosts()
+        public async Task<ActionResult<IEnumerable<PostVm>>> GetUserPosts()
         {
             var res = await _postService.GetUserPosts(UserId);
             return Ok(res);
         }
 
         [HttpGet("GetLikedPosts")]
-        public async Task<ActionResult<IEnumerable<TagVm>>> GetLikedPosts()
+        public async Task<ActionResult<IEnumerable<PostVm>>> GetLikedPosts()
         {
             var res = await _postService.GetLikedPosts(UserId);
             return Ok(res);

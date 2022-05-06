@@ -1,4 +1,5 @@
-﻿using AutoMapper;
+﻿using System;
+using AutoMapper;
 using SfPUT.Backend.Application.Common.Comments;
 using SfPUT.Backend.Application.Common.Mappings;
 using SfPUT.Backend.Application.Common.Sections;
@@ -11,6 +12,8 @@ namespace SfPUT.Backend.Application.Common.Posts
 {
     public class PostVm : IMapWith<Post>
     {
+        public Guid Id { get; set; }
+
         public SectionVm Section { get; set; }
 
         public PostInfo Info { get; set; }
@@ -33,6 +36,7 @@ namespace SfPUT.Backend.Application.Common.Posts
                         : post.Rates.Average(r => r.Value)))
                 .AfterMap((post, postVm, context) =>
                 {
+                    postVm.Id = post.Id;
                     postVm.Section = context.Mapper.Map<SectionVm>(post.Section);
                     postVm.Comments = post.Comments.Select(c => context.Mapper.Map<CommentVm>(c));
                     postVm.Tags = post.Tags.Select(t => context.Mapper.Map<TagVm>(t));

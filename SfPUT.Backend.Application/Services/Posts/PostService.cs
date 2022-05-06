@@ -27,8 +27,7 @@ namespace SfPUT.Backend.Application.Services.Posts
         private readonly ILikeService _likeService;
         private readonly ICommentService _commentService;
         private readonly IRateService _rateService;
-
-        // TODO#5: change number of dependencies.
+        
         public PostService(IPostDataService postDataService,
             ITagService tagService,
             IMapper mapper,
@@ -48,7 +47,6 @@ namespace SfPUT.Backend.Application.Services.Posts
 
         public async Task<Guid> CreatePost(CreatePostDto dto, Guid userId, string username)
         {
-            // TODO#10: think about ALL await usings in solution.
             await ThrowExceptionIfHavePostWithTitle(userId, dto.Title);
             var section = await _sectionService.Get(dto.SectionId);
             var tags = await _tagService.GetTags(dto.TagsIds);
@@ -75,7 +73,6 @@ namespace SfPUT.Backend.Application.Services.Posts
                 Tags = tags.ToList()
             };
             await _postDataService.Create(newPost);
-            // _tagService.AddPostToTags(newPost, tags);
             return newPost.Id;
         }
 
@@ -107,8 +104,7 @@ namespace SfPUT.Backend.Application.Services.Posts
             post.Info.LastEditTime = DateTime.Now;
             post.Info.Description = dto.Description;
             post.Info.SellerLink = dto.SellerLink;
-            post.Tags = tags.ToList(); 
-            // _tagService.AddPostToTags(post, tags);
+            post.Tags = tags.ToList();
             await _postDataService.Update(post.Id, post);
             return true;
         }
@@ -127,10 +123,6 @@ namespace SfPUT.Backend.Application.Services.Posts
                     .Where(p => tagsIds
                         .Intersect(p.Tags.Select(t => t.Id)).Any());
             }
-            // var posts = section.Posts
-            //     .Where(p => p.Info.Title.Contains(dto.Title) &&
-            //                 p.Info.CreationTime > dto.CreationTime &&
-            //                 dto.TagsIds.Intersect(p.Tags.Select(t => t.Id)).Any()).ToList();
             var postsVms = filteredPosts.Select(p => _mapper.Map<PostVm>(p))
                 .Where(vm => vm.Rate >= dto.MinRate);
             return postsVms;
@@ -145,7 +137,6 @@ namespace SfPUT.Backend.Application.Services.Posts
 
         public async Task<IEnumerable<PostVm>> GetRatedPosts(Guid userId)
         {
-            var rates = (await _rateService.GetUserRates(userId)).ToList();
             return (await _rateService.GetUserRates(userId))
                 .Select(r => _mapper.Map<PostVm>(r.Post));
         }
@@ -160,9 +151,6 @@ namespace SfPUT.Backend.Application.Services.Posts
         {
             var likes = await _likeService.GetUserLikes(userId);
             var postsId = new HashSet<Guid>(likes.Select(l => l.PostId));
-            var test = (await _postDataService.GetAll())
-                .Where(p => postsId.Contains(p.Id))
-                .ToList();
             return (await _postDataService.GetAll())
                 .Where(p => postsId.Contains(p.Id))
                 .Select(p => _mapper.Map<PostVm>(p));

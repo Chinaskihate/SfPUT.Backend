@@ -19,6 +19,7 @@ using SfPUT.Backend.Application.Common.Mappings;
 using SfPUT.Backend.Application.Interfaces;
 using SfPUT.Backend.Application.Interfaces.Photos;
 using SfPUT.Backend.Persistence;
+using SfPUT.Backend.WebApi.Middleware;
 using SfPUT.Backend.WebApi.Services.Photos;
 using Swashbuckle.AspNetCore.SwaggerGen;
 
@@ -42,7 +43,6 @@ namespace SfPUT.Backend.WebApi
             });
             services.AddApplication();
             services.AddPersistence(Configuration);
-            //services.AddRouting(options => options.LowercaseUrls = true);
             services.AddControllers();
 
             services.AddCors(options =>
@@ -72,8 +72,7 @@ namespace SfPUT.Backend.WebApi
             {
                 options.GroupNameFormat = "'v'VVV";
             });
-            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();  
-            //services.AddScoped<IPhotoService, PhotoService>();
+            services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
             services.AddSwaggerGen();
             services.AddApiVersioning();
             services.AddScoped<IPhotoService, PhotoService>();
@@ -87,7 +86,7 @@ namespace SfPUT.Backend.WebApi
                 app.UseDeveloperExceptionPage();
             }
 
-            // app.UseCustomExceptionHandler();
+            app.UseCustomExceptionHandler();
             app.UseSwagger();
             app.UseSwaggerUI(config =>
             {
