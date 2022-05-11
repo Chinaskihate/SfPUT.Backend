@@ -37,6 +37,11 @@ namespace SfPUT.Backend.Application.Services.Sections
             return section;
         }
 
+        public async Task<IEnumerable<ProposedSection>> GetProposedSections()
+        {
+            return await _proposedSectionDataService.GetAll();
+        }
+
         public async Task<bool> CreateSection(string name)
         {
             var section = await _sectionDataService.GetByName(name.ToLower());
@@ -67,6 +72,11 @@ namespace SfPUT.Backend.Application.Services.Sections
 
         public async Task<IEnumerable<SectionVm>> GetSectionVmsByName(string name)
         {
+            if (name == null)
+            {
+                return (await _sectionDataService.GetAll())
+                    .Select(s => _mapper.Map<SectionVm>(s));
+            }
             return (await _sectionDataService.GetByName(name))
                 .Select(s => _mapper.Map<SectionVm>(s));
         }

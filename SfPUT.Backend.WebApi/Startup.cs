@@ -10,6 +10,7 @@ using System.Linq;
 using System.Reflection;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.FileProviders;
@@ -66,14 +67,19 @@ namespace SfPUT.Backend.WebApi
                     options.Audience = "SfPUTApi";
                     options.RequireHttpsMetadata = false;
                 });
-
+            //services.AddAuthorization();
             services.AddControllers();
             services.AddVersionedApiExplorer(options =>
             {
                 options.GroupNameFormat = "'v'VVV";
             });
             services.AddTransient<IConfigureOptions<SwaggerGenOptions>, ConfigureSwaggerOptions>();
-            services.AddSwaggerGen();
+            services.AddSwaggerGen(config =>
+            {
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                config.IncludeXmlComments(xmlPath);
+            });
             services.AddApiVersioning();
             services.AddScoped<IPhotoService, PhotoService>();
         }
@@ -97,18 +103,8 @@ namespace SfPUT.Backend.WebApi
                     config.RoutePrefix = string.Empty;
                 }
             });
-            app.UseRouting();
+            //app.UseHsts();
             app.UseHttpsRedirection();
-            app.UseCors("AllowAll");
-            app.UseAuthentication();
-            app.UseAuthorization();
-            app.UseApiVersioning();
-
-            app.UseEndpoints(endpoints =>
-            {
-                endpoints.MapControllers();
-            });
-
             app.UseStaticFiles(new StaticFileOptions
             {
                 FileProvider = new PhysicalFileProvider(
@@ -120,6 +116,16 @@ namespace SfPUT.Backend.WebApi
                 FileProvider = new PhysicalFileProvider(
                     Path.Combine(env.ContentRootPath, "Photos")),
                 RequestPath = "/Photos"
+            });
+            app.UseRouting();
+            app.UseCors("AllowAll");
+            app.UseAuthentication();
+            app.UseAuthorization();
+            app.UseApiVersioning();
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
             });
         }
     }

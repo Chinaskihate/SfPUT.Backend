@@ -74,11 +74,6 @@ namespace SfPUT.Backend.Application.Services.Tags
             return tags;
         }
 
-        public Task<bool> AddPostToTags(Post post, IEnumerable<Tag> tags)
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task<IEnumerable<Tag>> ConvertTagVmsToTags(IEnumerable<TagVm> tagVms)
         {
             var tags = tagVms.Select(vm => _mapper.Map<Tag>(vm));

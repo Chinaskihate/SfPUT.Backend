@@ -62,5 +62,12 @@ namespace SfPUT.Backend.Application.Services.Rates
             var rates = await _rateDataService.GetByUserId(userId);
             return await rates.ToListAsync();
         }
+
+        public async Task<double?> GetUserRating(Guid userId)
+        {
+            var rates = (await _postDataService.GetUserPosts(userId))
+                .SelectMany(p => p.Rates);
+            return rates.Any() ? rates.Average(r => r.Value) : null;
+        }
     }
 }

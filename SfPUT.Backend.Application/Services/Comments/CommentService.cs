@@ -40,7 +40,7 @@ namespace SfPUT.Backend.Application.Services.Comments
                 Info = new CommentInfo()
                 {
                     Content = dto.Content,
-                    CreationDate = DateTime.Now,
+                    CreationTime = DateTime.Now,
                     LastEditTime = DateTime.Now
                 },
                 User = user,
@@ -67,7 +67,7 @@ namespace SfPUT.Backend.Application.Services.Comments
             var comment = await _commentDataService.Get(dto.CommentId);
             if (comment == null || 
                 comment.User.Id != userId ||
-                (DateTime.Now - comment.Info.CreationDate).TotalDays >= 1)
+                (DateTime.Now - comment.Info.CreationTime).TotalDays >= 1)
             {
                 return false;
             }

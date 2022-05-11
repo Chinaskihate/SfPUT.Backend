@@ -54,6 +54,10 @@ namespace SfPUT.Backend.Persistence.DataServices
 
         public async Task<IQueryable<Tag>> GetByName(string name)
         {
+            if (name == null)
+            {
+                return await GetAll();
+            }
             return _dbContext.Tags.Where(t => t.Name.Contains(name));
         }
     }

@@ -10,5 +10,6 @@ namespace SfPUT.Backend.Application.Interfaces.Rates
     {
         Task<bool> RatePost(RatePostDto dto, Guid userId);
         Task<IEnumerable<Rate>> GetUserRates(Guid userId);
+        Task<double?> GetUserRating(Guid userId);
     }
 }

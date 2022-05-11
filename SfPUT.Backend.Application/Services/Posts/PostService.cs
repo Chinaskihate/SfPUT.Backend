@@ -1,20 +1,18 @@
 ﻿using AutoMapper;
+using SfPUT.Backend.Application.Common.Exceptions;
 using SfPUT.Backend.Application.Common.Posts;
-using SfPUT.Backend.Application.Common.Tags;
+using SfPUT.Backend.Application.Interfaces.Comments;
 using SfPUT.Backend.Application.Interfaces.DataServices;
+using SfPUT.Backend.Application.Interfaces.Likes;
 using SfPUT.Backend.Application.Interfaces.Posts;
+using SfPUT.Backend.Application.Interfaces.Rates;
 using SfPUT.Backend.Application.Interfaces.Sections;
 using SfPUT.Backend.Application.Interfaces.Tags;
-using SfPUT.Backend.Application.Interfaces.Users;
 using SfPUT.Backend.Domain.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SfPUT.Backend.Application.Common.Exceptions;
-using SfPUT.Backend.Application.Interfaces.Comments;
-using SfPUT.Backend.Application.Interfaces.Likes;
-using SfPUT.Backend.Application.Interfaces.Rates;
 
 namespace SfPUT.Backend.Application.Services.Posts
 {
@@ -111,6 +109,7 @@ namespace SfPUT.Backend.Application.Services.Posts
 
         public async Task<IEnumerable<PostVm>> GetPosts(GetPostDto dto)
         {
+            dto.Title ??= string.Empty;
             var tagsIds = new HashSet<Guid>((await _tagService.GetTags(dto.TagsIds))
                 .Select(t => t.Id));
             var section = await _sectionService.Get(dto.SectionId);
@@ -121,7 +120,8 @@ namespace SfPUT.Backend.Application.Services.Posts
             {
                 filteredPosts = filteredPosts
                     .Where(p => tagsIds
-                        .Intersect(p.Tags.Select(t => t.Id)).Any());
+                        .IsSubsetOf(new HashSet<Guid>(p.Tags
+                            .Select(t => t.Id))));
             }
             var postsVms = filteredPosts.Select(p => _mapper.Map<PostVm>(p))
                 .Where(vm => vm.Rate >= dto.MinRate);

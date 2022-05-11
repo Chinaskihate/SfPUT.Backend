@@ -6,7 +6,7 @@ namespace SfPUT.Backend.Domain.Models
     {
         public string Content { get; set; }
 
-        public DateTime CreationDate { get; set; }
+        public DateTime CreationTime { get; set; }
 
         public DateTime LastEditTime { get; set; }
     }

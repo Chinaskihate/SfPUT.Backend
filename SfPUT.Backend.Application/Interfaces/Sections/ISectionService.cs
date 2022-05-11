@@ -14,6 +14,8 @@ namespace SfPUT.Backend.Application.Interfaces.Sections
 
         Task<Section> Get(Guid id);
 
+        Task<IEnumerable<ProposedSection>> GetProposedSections();
+
         Task<bool> CreateSection(string name);
 
         Task<bool> DeleteSection(Guid id);
